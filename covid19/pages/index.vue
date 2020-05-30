@@ -56,12 +56,12 @@
             </tr>
             <tr v-for="(row, key) in countries"
                 :key="key">
-              <td><nuxt-link :to="`country/${row.param}`" class="country__country">{{ row.country }}</nuxt-link></td>
-              <td><nuxt-link :to="`country/${row.param}`" class="country__data">{{ numberFormat(row.total.confirmed)  }}</nuxt-link></td>
-              <td><nuxt-link :to="`country/${row.param}`" class="country__data">{{ numberFormat(row.total.active) }}</nuxt-link></td>
-              <td><nuxt-link :to="`country/${row.param}`" class="country__data">{{ numberFormat(row.total.recovered) }}</nuxt-link></td>
-              <td><nuxt-link :to="`country/${row.param}`" class="country__data">{{ numberFormat(row.total.deaths) }}</nuxt-link></td>
-              <td><nuxt-link :to="`country/${row.param}`" class="country__arrow"></nuxt-link></td>
+              <td><nuxt-link :to="`country/${row.code}`" class="country__country">{{ row.country }}</nuxt-link></td>
+              <td><nuxt-link :to="`country/${row.code}`" class="country__data">{{ numberFormat(row.total.confirmed)  }}</nuxt-link></td>
+              <td><nuxt-link :to="`country/${row.code}`" class="country__data">{{ numberFormat(row.total.active) }}</nuxt-link></td>
+              <td><nuxt-link :to="`country/${row.code}`" class="country__data">{{ numberFormat(row.total.recovered) }}</nuxt-link></td>
+              <td><nuxt-link :to="`country/${row.code}`" class="country__data">{{ numberFormat(row.total.deaths) }}</nuxt-link></td>
+              <td><nuxt-link :to="`country/${row.code}`" class="country__arrow"></nuxt-link></td>
             </tr>
           </table>
         </div>
@@ -89,7 +89,7 @@
     },
     methods: {
       getSummary() {
-        const action = `${this.apiUrl}json/summary/summary.json`
+        const action = `${this.apiUrl}json/totals/totals.json`
         axios.get(action)
           .then(response => {
             this.summary = response.data[0]
@@ -98,7 +98,7 @@
         })
       },
       getCountries() {
-        const action = `${this.apiUrl}api/get_country_list`
+        const action = `${this.apiUrl}json/create_index/json.json`
         axios.get(action)
           .then(response => {
             this.countries = response.data
@@ -128,7 +128,7 @@
         }, this)
         temp.sort(compare)
         let array = []
-        temp.forEach((row2, index2) => {
+        temp.forEach((row2) => {
           this.countries.forEach((row3, index3) => {
             if (row2.key === index3) {
               array.push(row3)

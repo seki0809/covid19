@@ -2,7 +2,7 @@
   <div>
     <div class="c-hero header">
       <div class="l-wrapper">
-        <h1 class="header__title">{{ lastDay.country }}</h1>
+        <h1 class="header__title">{{ country }}</h1>
       </div>
     </div>
 
@@ -12,19 +12,19 @@
           <div class="row">
             <div class="col-3 c-summary__column">
               <h2 class="c-summary__text">累計感染者</h2>
-              <p class="c-summary__number">{{ numberFormat(lastDay.total.confirmed) }}<span class="c-summary__people">人</span></p>
+              <p class="c-summary__number">{{ numberFormat(total.confirmed) }}<span class="c-summary__people">人</span></p>
             </div>
             <div class="col-3 c-summary__column">
               <h2 class="c-summary__text">現在感染者</h2>
-              <p class="c-summary__number">{{ numberFormat(lastDay.total.active) }}<span class="c-summary__people">人</span></p>
+              <p class="c-summary__number">{{ numberFormat(total.active) }}<span class="c-summary__people">人</span></p>
             </div>
             <div class="col-3 c-summary__column">
               <h2 class="c-summary__text">回復者</h2>
-              <p class="c-summary__number">{{ numberFormat(lastDay.total.recovered) }}<span class="c-summary__people">人</span></p>
+              <p class="c-summary__number">{{ numberFormat(total.recovered) }}<span class="c-summary__people">人</span></p>
             </div>
             <div class="col-3 c-summary__column">
               <h2 class="c-summary__text">死亡者</h2>
-              <p class="c-summary__number">{{ numberFormat(lastDay.total.deaths) }}<span class="c-summary__people">人</span></p>
+              <p class="c-summary__number">{{ numberFormat(total.deaths) }}<span class="c-summary__people">人</span></p>
             </div>
           </div>
         </div>
@@ -48,13 +48,12 @@
     data() {
       return {
         params: this.$route.params.country,
-        lastDay: {
-          total: {
-            active: 0,
-            confirmed: 0,
-            deaths: 0,
-            recovered: 0
-          }
+        country: '',
+        total: {
+          active: 0,
+          confirmed: 0,
+          deaths: 0,
+          recovered: 0
         },
         history: {},
         chartDate: [],
@@ -65,23 +64,15 @@
       }
     },
     created () {
-      this.getLastDay()
-      this.getHistory()
+      this.getData();
     },
     methods: {
-      getLastDay() {
-        const action = `${this.apiUrl}api/get_country_last_day/${this.params}`
+      getData() {
+        const action = `${this.apiUrl}json/create_detail/${this.params}.json`
         axios.get(action)
           .then(response => {
-            this.lastDay = response.data
-          }).catch(error => {
-          console.error(error)
-        })
-      },
-      getHistory() {
-        const action = `${this.apiUrl}api/get_country_history/${this.params}`
-        axios.get(action)
-          .then(response => {
+            this.country = response.data.slice(-1)[0].country
+            this.total = response.data.slice(-1)[0].total
             this.history = response.data
             this.createChart();
           }).catch(error => {

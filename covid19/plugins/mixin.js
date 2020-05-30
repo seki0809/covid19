@@ -3,7 +3,7 @@ import Vue from 'vue'
 Vue.mixin({
   data(){
     return {
-      apiUrl: 'https://covid19.urawa-reds.com/'
+      apiUrl: 'https://urawa-reds.com/'
     }
   },
   methods: {
