@@ -21,10 +21,10 @@
     },
     methods: {
       getData() {
-        const action = `${this.apiUrl}api/get_last_day`
+        const action = `${this.apiUrl}json/totals/totals.json`
         axios.get(action)
           .then(response => {
-            const date = new Date(response.data)
+            const date = new Date(response.data[0].lastUpdate)
             this.last_day = `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`;
           }).catch(error => {
           console.error(error)

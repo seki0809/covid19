@@ -65,5 +65,8 @@ export default {
   },
   generate: {
     fallback: true,
+  },
+  router: {
+    base: '/covid19/'
   }
 }

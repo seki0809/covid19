@@ -12,19 +12,19 @@
           <div class="row">
             <div class="col-3 c-summary__column">
               <h2 class="c-summary__text">累計感染者</h2>
-              <p class="c-summary__number">{{ numberFormat(total.confirmed) }}<span class="c-summary__people">人</span></p>
+              <p v-show="loading" class="c-summary__number">{{ numberFormat(total.confirmed) }}<span class="c-summary__people">人</span></p>
             </div>
             <div class="col-3 c-summary__column">
               <h2 class="c-summary__text">現在感染者</h2>
-              <p class="c-summary__number">{{ numberFormat(total.active) }}<span class="c-summary__people">人</span></p>
+              <p v-show="loading" class="c-summary__number">{{ numberFormat(total.active) }}<span class="c-summary__people">人</span></p>
             </div>
             <div class="col-3 c-summary__column">
               <h2 class="c-summary__text">回復者</h2>
-              <p class="c-summary__number">{{ numberFormat(total.recovered) }}<span class="c-summary__people">人</span></p>
+              <p v-show="loading" class="c-summary__number">{{ numberFormat(total.recovered) }}<span class="c-summary__people">人</span></p>
             </div>
             <div class="col-3 c-summary__column">
               <h2 class="c-summary__text">死亡者</h2>
-              <p class="c-summary__number">{{ numberFormat(total.deaths) }}<span class="c-summary__people">人</span></p>
+              <p v-show="loading" class="c-summary__number">{{ numberFormat(total.deaths) }}<span class="c-summary__people">人</span></p>
             </div>
           </div>
         </div>
@@ -33,6 +33,14 @@
 
     <div class="c-chart">
       <canvas id="chart" width="820" height="400"></canvas>
+    </div>
+
+    <div class="c-back">
+      <div class="l-wrapper">
+        <div class="c-box">
+          <nuxt-link to="/" class="c-back__text">戻る</nuxt-link>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -48,7 +56,7 @@
     data() {
       return {
         params: this.$route.params.country,
-        country: '',
+        country: '　',
         total: {
           active: 0,
           confirmed: 0,
@@ -61,6 +69,7 @@
         chartRecovered: [],
         chartDeaths: [],
         chartActive: [],
+        loading: false
       }
     },
     created () {
@@ -75,6 +84,7 @@
             this.total = response.data.slice(-1)[0].total
             this.history = response.data
             this.createChart();
+            this.loading = true
           }).catch(error => {
           console.error(error)
         })
@@ -147,7 +157,7 @@
       padding: 60px 0;
     }
     &__title {
-      color: #fff;
+      color: $white;
       font-size: 2.6rem;
       text-align: center;
       @include pc {
@@ -172,6 +182,15 @@
       padding: 20px;
       border-radius: 8px;
       overflow-x: hidden;
+    }
+  }
+  .c-back {
+    padding-top: 40px;
+    &__text {
+      padding: 10px;
+      display: block;
+      text-align: center;
+      text-decoration: underline;
     }
   }
 </style>

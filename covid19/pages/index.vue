@@ -9,19 +9,19 @@
             <div class="row">
               <div class="col-3 c-summary__column">
                 <h2 class="c-summary__text">感染者</h2>
-                <p class="c-summary__number">{{ numberFormat(summary.confirmed) }}<span class="c-summary__people">人</span></p>
+                <p v-show="loading" class="c-summary__number">{{ numberFormat(summary.confirmed) }}<span class="c-summary__people">人</span></p>
               </div>
               <div class="col-3 c-summary__column">
                 <h2 class="c-summary__text">回復者</h2>
-                <p class="c-summary__number">{{ numberFormat(summary.recovered) }}<span class="c-summary__people">人</span></p>
+                <p v-show="loading" class="c-summary__number">{{ numberFormat(summary.recovered) }}<span class="c-summary__people">人</span></p>
               </div>
               <div class="col-3 c-summary__column">
                 <h2 class="c-summary__text">重症患者</h2>
-                <p class="c-summary__number">{{ numberFormat(summary.critical) }}<span class="c-summary__people">人</span></p>
+                <p v-show="loading" class="c-summary__number">{{ numberFormat(summary.critical) }}<span class="c-summary__people">人</span></p>
               </div>
               <div class="col-3 c-summary__column">
                 <h2 class="c-summary__text">死亡者</h2>
-                <p class="c-summary__number">{{ numberFormat(summary.deaths) }}<span class="c-summary__people">人</span></p>
+                <p v-show="loading" class="c-summary__number">{{ numberFormat(summary.deaths) }}<span class="c-summary__people">人</span></p>
               </div>
             </div>
           </div>
@@ -31,7 +31,7 @@
 
     <div class="country">
       <div class="l-wrapper">
-        <div class="c-box">
+        <div v-show="loading" class="c-box">
           <h2 class="country__title">国別</h2>
           <table>
             <tr>
@@ -78,9 +78,15 @@
   export default Vue.extend({
     data(){
       return {
-        summary: {},
+        summary: {
+          confirmed: '0',
+          recovered: '0',
+          critical: '0',
+          deaths: '0'
+        },
         countries: {},
-        sort: 'confirmed'
+        sort: 'confirmed',
+        loading: false
       }
     },
     created () {
@@ -93,6 +99,7 @@
         axios.get(action)
           .then(response => {
             this.summary = response.data[0]
+            this.loading = true
           }).catch(error => {
           console.error(error)
         })
@@ -103,6 +110,7 @@
           .then(response => {
             this.countries = response.data
             this.sortCountries()
+            this.loading = true
           }).catch(error => {
           console.error(error)
         })
@@ -145,7 +153,11 @@
   @import '../assets/css/var';
 
   .country {
+    min-height: 800px;
     padding-top: 20px;
+    .c-box {
+      background-color: $bg;
+    }
     @include pc {
       padding-top: 40px;
     }
@@ -153,7 +165,7 @@
       padding: 6px 16px;
       background: $main;
       border-radius: 15px 15px 0 0;
-      color: #fff;
+      color: $white;
       font-size: 2rem;
       font-weight: bold;
     }
@@ -162,6 +174,7 @@
       font-size: 1.6rem;
     }
     table {
+      background-color: $bg;
     }
     tr {
       width: 100%;
@@ -179,6 +192,7 @@
       background: lighten($main, 50%);
     }
     td {
+      background-color: $white;
     }
     &__country,
     &__data,
