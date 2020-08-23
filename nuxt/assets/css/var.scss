@@ -1,0 +1,11 @@
+
+$main:  #5b5777;
+$bg:    #f6f6f6;
+$white: #fff;
+//$main: #222;
+
+@mixin pc {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
