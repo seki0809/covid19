@@ -8,4 +8,12 @@ Nuxt.jsとChart.jsとRakuten RapidAPIで新型コロナウィルス感染症の�
 
 # GitHub Pages
 
+こちらで作ったページが見れます。
+
 [https://seki0809.github.io/covid19/](https://seki0809.github.io/covid19/)
+
+# フォルダ構成
+
+├ nuxt Nuxt.jsのファイル
+├ docs GitHub Pages用ファイル
+└ php API取得の処理
